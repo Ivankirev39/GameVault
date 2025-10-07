@@ -8,7 +8,6 @@
     </form>
     <div class="error" v-if="authError">
         {{ authError }}
-
     </div>
 
     <div v-if="isLoggedIn">
