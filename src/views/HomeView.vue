@@ -1,17 +1,17 @@
 <template>
+
   <section class="home">
-    
-    <h1 class="md:text-4xl font-bold text-[#f4f4f4] mt-6">
-      GameVault
-    </h1>
+    <header class="text-[#f4f4f4] mx-auto max-w-7xl mt-6">
+      <h1 class="text-4xl md:text-5xl font-bold">Game Vault</h1>
+      <p class="italic text-lg md:text-2xl mt-3">
+        Looking for what to play? Find it here
+      </p>
+    </header>
 
-    <h2 class="md:text-4xl italic text-[#f4f4f4] mt-5">
-      Looking for what to play? Find it here
-    </h2>
-
-    <h3 class="md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4] mt-10">
-      Popular Games
-    </h3>
+    <div class="mt-10 mx-auto max-w-7xl">
+      <h2 id="popular-games" class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
+        Popular Games
+      </h2>
    
     <!-- Loading state -->
     <div v-if="loading">Loading games...</div>
@@ -26,6 +26,7 @@
         <h3>{{ game.name }}</h3>
         <p>Rating: {{ game.rating }}/5</p>
       </div>
+    </div>
     </div>
   </section>
 </template>
