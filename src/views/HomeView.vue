@@ -2,7 +2,7 @@
 
   <section class="home">
     <header class="text-[#f4f4f4] mx-auto max-w-7xl mt-6">
-      <h1 class="text-4xl md:text-5xl font-bold">Game Vault</h1>
+      <h1 class="text-4xl md:text-5xl font-bold">GameVault</h1>
       <p class="italic text-lg md:text-2xl mt-3">
         Looking for what to play? Find it here
       </p>
@@ -19,14 +19,29 @@
     <!-- Error state -->
     <div v-if="error" class="error">{{ error }}</div>
     
-    <!-- Games grid -->
-    <div v-if="!loading && games.length > 0" class="games-grid">
-      <div v-for="game in games" :key="game.id" class="game-card">
-        <img :src="game.background_image" :alt="game.name" />
-        <h3>{{ game.name }}</h3>
-        <p>Rating: {{ game.rating }}/5</p>
-      </div>
-    </div>
+<!-- Games grid -->
+<div v-if="!loading && games.length > 0" class="flex flex-wrap gap-5 p-3">
+  <div
+    v-for="game in games"
+    :key="game.id"
+    class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden m-2 hover:scale-105 transition-transform duration-300"
+    style="flex: 1 1 250px; min-width: 280px;"
+  >
+
+    <img
+      :src="game.background_image"
+      :alt="game.name"
+      class="w-full h-[300px] object-cover"
+    />
+      <div class="w-full h-full bg-gray-800  p-3 shadow-sm">
+    <a href="#">
+      <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
+    </a>
+    <p class="mb-3 font-normal text-gray-300">Rating: {{ game.rating }}/5</p>
+</div>
+  </div>
+</div>
+
     </div>
   </section>
 </template>
@@ -44,24 +59,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
 
-.game-card {
-  background: #2a2a2a;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.game-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
 
 .game-card h3 {
   padding: 10px;
