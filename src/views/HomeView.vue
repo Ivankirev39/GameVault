@@ -148,11 +148,15 @@
 
     </div>
   </section>
+
+<FooterComponent />
+
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRawgAPI } from '../modules/useRawgAPI'
+import FooterComponent from '../components/FooterComponent.vue'
 
 const { getPopularGames, getNewReleases } = useRawgAPI()
 
