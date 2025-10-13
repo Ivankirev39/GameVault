@@ -132,9 +132,16 @@ export function useRawgAPI() {
       
       const response = await fetch(url)
       const data = await response.json()
-      games.value = data.results
       
-      return data.results
+      // Filter out adult games manually
+      const filtered = data.results.filter(game => {
+        const hasAdultTag = game.tags?.some(tag => tag.id === 16459 || tag.slug === 'adult' || tag.slug === 'nsfw')
+        return !hasAdultTag
+      })
+      
+      games.value = filtered
+      
+      return filtered
     } catch (err) {
       error.value = err.message
       console.error('Error fetching new releases:', err)
