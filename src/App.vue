@@ -22,7 +22,7 @@ import AuthButton from './components/AuthButton.vue'
           <RouterLink to="/about" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Browse</RouterLink>
         </li>
         <li>
-          <a href="#" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New Releases</a>
+          <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New and Trending</RouterLink>
         </li>
         <li>
           <a href="#" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Top 100</a>

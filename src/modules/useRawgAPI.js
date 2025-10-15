@@ -175,19 +175,42 @@ export function useRawgAPI() {
     }
   }
 
-  // Return everything
-  return {
-    // State
-    games,
-    game,
-    loading,
-    error,
+// Trending - games with most reviews/ratings recently
+const getTrendingGames = async (pageSize = 20) => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const url = buildURL('/games', {
+      page_size: pageSize,
+      ordering: '-added', // Most added to collections recently
+      exclude_additions: 1
+    })
     
-    // Methods
-    getPopularGames,
-    searchGames,
-    getGameDetails,
-    getNewReleases,
-    getTop100Games
+    const response = await fetch(url)
+    const data = await response.json()
+    
+    return data.results
+  } catch (err) {
+    error.value = err.message
+    console.error('Error fetching trending games:', err)
+  } finally {
+    loading.value = false
   }
+}
+
+// Return in your useRawgAPI
+return {
+  games,
+  loading,
+  error,
+  getPopularGames,
+  getNewReleases,
+  getTrendingGames,     
+  getTop100Games,
+  searchGames,
+  getGameDetails
+}
+
+  
 }
