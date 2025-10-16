@@ -74,7 +74,7 @@
       :alt="game.name"
       class="w-full h-[300px] object-cover"
     />
-      <div class="w-full h-full bg-gray-800  p-3 shadow-sm cursor-pointer">
+      <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
     <a href="#">
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
     </a>
