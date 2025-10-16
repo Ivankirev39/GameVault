@@ -8,28 +8,102 @@
 
 
     </header>
+    <div class="mx-auto max-w-7xl mt-6 px-4 flex items-center gap-6">
+      <!-- Platform Dropdown -->
+      <div class="relative">
+        <button 
+          @click="togglePlatformDropdown"
+          class="inline-flex items-center rounded-lg border-2 border-[#A80ADD] bg-[#121212] px-5 py-2.5 text-center text-lg font-medium text-[#f4f4f4]" 
+          type="button"
+        >
+          {{ selectedPlatformName || 'Platform' }}
+          <svg class="ms-3 h-5 w-5 text-[#A80ADD]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+          </svg>
+        </button>
 
-          <div class="mx-auto max-w-7xl mt-6 flex items-center gap-6">
-             <button class="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border-3 text-lg border-[#A80ADD] text-[#f4f4f4] font-semibold bg-[#121212]">
-  <span>Platforms</span>
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-[20px] h-[20px] text-[#A80ADD]" fill="currentColor" viewBox="0 0 20 20">
-    <path fill-rule="evenodd" d="M10 14a1 1 0 01-.707-.293l-4-4a1 1 0 111.414-1.414L10 11.586l3.293-3.293a1 1 0 111.414 1.414l-4 4A1 1 0 0110 14z" clip-rule="evenodd" />
-  </svg>
-</button>
-     <button class="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border-3 text-lg border-[#A80ADD] text-[#f4f4f4] font-semibold bg-[#121212]">
-  <span>Genre</span>
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-[20px] h-[20px] text-[#A80ADD]" fill="currentColor" viewBox="0 0 20 20">
-    <path fill-rule="evenodd" d="M10 14a1 1 0 01-.707-.293l-4-4a1 1 0 111.414-1.414L10 11.586l3.293-3.293a1 1 0 111.414 1.414l-4 4A1 1 0 0110 14z" clip-rule="evenodd" />
-  </svg>
-</button>
+        <!-- Dropdown menu -->
+        <div 
+          v-if="showPlatformDropdown"
+          class="absolute z-10 mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-gray-900 shadow-lg"
+        >
+          <ul class="py-2 text-sm text-gray-200">
+            <li>
+              <button 
+                @click="selectPlatform(null, 'All Platforms')"
+                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+              >
+                All Platforms
+              </button>
+            </li>
+            <li v-for="platform in platforms" :key="platform.id">
+              <button 
+                @click="selectPlatform(platform.id, platform.name)"
+                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+              >
+                {{ platform.name }}
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
 
+      <!-- Genre Dropdown -->
+      <div class="relative">
+        <button 
+          @click="toggleGenreDropdown"
+          class="inline-flex items-center rounded-lg border-2 border-[#A80ADD] bg-[#121212] px-5 py-2.5 text-center text-lg font-medium text-[#f4f4f4]" 
+          type="button"
+        >
+          {{ selectedGenreName || 'Genre' }}
+          <svg class="ms-3 h-5 w-5 text-[#A80ADD]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+          </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div 
+          v-if="showGenreDropdown"
+          class="absolute z-10 mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-gray-900 shadow-lg"
+        >
+          <ul class="py-2 text-sm text-gray-200">
+            <li>
+              <button 
+                @click="selectGenre(null, 'All Genres')"
+                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+              >
+                All Genres
+              </button>
+            </li>
+            <li v-for="genre in genres" :key="genre.id">
+              <button 
+                @click="selectGenre(genre.id, genre.name)"
+                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+              >
+                {{ genre.name }}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Clear Filters Button -->
+      <button 
+        v-if="selectedPlatform || selectedGenre"
+        @click="clearFilters"
+        class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+      >
+        Clear Filters
+      </button>
+    </div>
 
 
-    <!-- TRENDING THIS WEEK SECTION -->
+
+
+    <!-- TRENDING -->
     <div class="mt-10 mx-auto max-w-7xl px-4">
       <h2 class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4] mb-6">
-         Trending This Week
+         Trending Games
       </h2>
 
       <!-- Loading state -->
@@ -107,13 +181,11 @@
 
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
 
-
-
-const { getTrendingGames, getNewReleases } = useRawgAPI()
+const { getTrendingGames, getNewReleases, getGenres, getPlatforms } = useRawgAPI()
 
 // Trending state
 const trending = ref([])
@@ -125,12 +197,61 @@ const newReleases = ref([])
 const newReleasesLoading = ref(false)
 const newReleasesError = ref(null)
 
-// Fetch data on mount
-onMounted(async () => {
-  // Fetch Trending
+// Filter state
+const genres = ref([])
+const platforms = ref([])
+const selectedGenre = ref(null)
+const selectedGenreName = ref(null)
+const selectedPlatform = ref(null)
+const selectedPlatformName = ref(null)
+const showGenreDropdown = ref(false)
+const showPlatformDropdown = ref(false)
+
+// Toggle dropdowns
+const toggleGenreDropdown = () => {
+  showGenreDropdown.value = !showGenreDropdown.value
+  showPlatformDropdown.value = false
+}
+
+const togglePlatformDropdown = () => {
+  showPlatformDropdown.value = !showPlatformDropdown.value
+  showGenreDropdown.value = false
+}
+
+// Select filters
+const selectGenre = (id, name) => {
+  selectedGenre.value = id
+  selectedGenreName.value = name
+  showGenreDropdown.value = false
+  fetchFilteredGames()
+}
+
+const selectPlatform = (id, name) => {
+  selectedPlatform.value = id
+  selectedPlatformName.value = name
+  showPlatformDropdown.value = false
+  fetchFilteredGames()
+}
+
+// Clear filters
+const clearFilters = () => {
+  selectedGenre.value = null
+  selectedGenreName.value = null
+  selectedPlatform.value = null
+  selectedPlatformName.value = null
+  fetchFilteredGames()
+}
+
+const fetchFilteredGames = async () => {
+  const filters = {
+    genre: selectedGenre.value,
+    platform: selectedPlatform.value
+  }
+
+  // Only fetch Trending with filters
   trendingLoading.value = true
   try {
-    trending.value = await getTrendingGames(12)
+    trending.value = await getTrendingGames(12, filters)
     trendingError.value = null
   } catch (e) {
     trendingError.value = 'Failed to load trending games'
@@ -138,10 +259,21 @@ onMounted(async () => {
     trendingLoading.value = false
   }
 
-  // Fetch New Releases
+  // New Releases stays unfiltered - remove this section or fetch without filters
+  // Don't call it here, keep the original onMounted fetch
+}
+
+onMounted(async () => {
+  genres.value = await getGenres()
+  platforms.value = await getPlatforms()
+
+  // Fetch trending (will be filtered later)
+  await fetchFilteredGames()
+
+  // Fetch new releases ONCE without filters
   newReleasesLoading.value = true
   try {
-    newReleases.value = await getNewReleases(12)
+    newReleases.value = await getNewReleases(12)  // No filters
     newReleasesError.value = null
   } catch (e) {
     newReleasesError.value = 'Failed to load new releases'
@@ -150,8 +282,14 @@ onMounted(async () => {
   }
 })
 
+
+// Initial data fetch
+onMounted(async () => {
+  // Fetch genres and platforms
+  genres.value = await getGenres()
+  platforms.value = await getPlatforms()
+
+  // Fetch games
+  fetchFilteredGames()
+})
 </script>
-
-<style>
-
-</style>

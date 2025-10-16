@@ -175,16 +175,46 @@ export function useRawgAPI() {
     }
   }
 
-// Trending - games with most reviews/ratings recently
-const getTrendingGames = async (pageSize = 20) => {
+// In src/modules/useRawgAPI.js
+
+// Get all genres
+const getGenres = async () => {
+  try {
+    const url = buildURL('/genres', {})
+    const response = await fetch(url)
+    const data = await response.json()
+    return data.results
+  } catch (err) {
+    console.error('Error fetching genres:', err)
+    return []
+  }
+}
+
+// Get all platforms
+const getPlatforms = async () => {
+  try {
+    const url = buildURL('/platforms', {})
+    const response = await fetch(url)
+    const data = await response.json()
+    return data.results
+  } catch (err) {
+    console.error('Error fetching platforms:', err)
+    return []
+  }
+}
+
+// Update your existing getTrendingGames to accept filters
+const getTrendingGames = async (pageSize = 20, filters = {}) => {
   loading.value = true
   error.value = null
   
   try {
     const url = buildURL('/games', {
       page_size: pageSize,
-      ordering: '-added', // Most added to collections recently
-      exclude_additions: 1
+      ordering: '-added',
+      exclude_additions: 1,
+      genres: filters.genre,      // Add genre filter
+      platforms: filters.platform // Add platform filter
     })
     
     const response = await fetch(url)
@@ -199,14 +229,16 @@ const getTrendingGames = async (pageSize = 20) => {
   }
 }
 
-// Return in your useRawgAPI
+// Add to return statement
 return {
   games,
   loading,
   error,
   getPopularGames,
   getNewReleases,
-  getTrendingGames,     
+  getTrendingGames,
+  getGenres,        // ADD
+  getPlatforms,     // ADD
   getTop100Games,
   searchGames,
   getGameDetails
