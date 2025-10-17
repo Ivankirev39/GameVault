@@ -27,7 +27,12 @@ const router = createRouter({
       {
     path: '/new-trending',
     name: 'NewTrending',
-    component: () => import('../views/NewAndTrending.vue')  // ADD THIS
+    component: () => import('../views/NewAndTrending.vue') 
+  },
+  {
+    path: '/top-100',
+    name: 'Top100',
+    component: () => import('../views/Top100.vue')  
   },
   ],
 

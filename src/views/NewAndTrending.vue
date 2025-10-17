@@ -91,7 +91,7 @@
       <button 
         v-if="selectedPlatform || selectedGenre"
         @click="clearFilters"
-        class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+        class="rounded-lg bg-red-600 px-4 py-2 text-[#f4f4f4] cursor-pointer text-xl hover:bg-red-700"
       >
         Clear Filters
       </button>
@@ -103,7 +103,7 @@
     <!-- TRENDING -->
     <div class="mt-10 mx-auto max-w-7xl px-4">
       <h2 class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4] mb-6">
-         Trending Games
+         Trending this week
       </h2>
 
       <!-- Loading state -->
