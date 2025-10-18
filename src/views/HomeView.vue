@@ -75,10 +75,11 @@
       class="w-full h-[300px] object-cover"
     />
       <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
-    <a href="#">
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
-    </a>
-    <p class="mb-3 font-normal text-gray-300">Rating: {{ game.rating }}/5</p>
+        <!-- changed: use router-link to navigate to /game/:id -->
+        <router-link :to="`/game/${game.id}`" class="block">
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
+        </router-link>
+        <p class="mb-3 font-normal text-gray-300">Rating: {{ game.rating }}/5</p>
 </div>
   </div>
 </div>
@@ -137,9 +138,10 @@
             class="w-full h-[300px] object-cover"
           />
           <div class="w-full h-full bg-gray-800  p-3 shadow-sm cursor-pointer">
-            <a href="#">
+            <!-- changed: use router-link to navigate to /game/:id -->
+            <router-link :to="`/game/${game.id}`" class="block">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
-            </a>
+            </router-link>
             <p class="mb-3 font-normal text-gray-300">Released: {{ game.released }}</p>
           </div>
         </div>

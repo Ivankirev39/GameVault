@@ -126,9 +126,9 @@
             class="w-full h-[300px] object-cover"
           />
                <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
-            <a href="#">
+            <router-link :to="`/game/${game.id}`" class="block">
               <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
-            </a>
+            </router-link>
             <p class="text-gray-300">Rating: {{ game.rating }}/5</p>
           </div>
         </div>
@@ -161,9 +161,9 @@
             class="w-full h-[300px] object-cover"
           />
           <div class="bg-gray-800 p-3 cursor-pointer">
-            <a href="#">
+            <router-link :to="`/game/${game.id}`" class="block">
               <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
-            </a>
+            </router-link>
             <p class="text-gray-300">Released: {{ game.released }}</p>
           </div>
         </div>

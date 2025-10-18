@@ -93,25 +93,25 @@ export function useRawgAPI() {
   }
 
   // 3. Get Game Details (for GameDetail page)
-  const getGameDetails = async (gameId) => {
-    loading.value = true
-    error.value = null
+const getGameDetails = async (gameId) => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const url = buildURL(`/games/${gameId}`)
     
-    try {
-      const url = buildURL(`/games/${gameId}`)
-      
-      const response = await fetch(url)
-      const data = await response.json()
-      game.value = data
-      
-      return data
-    } catch (err) {
-      error.value = err.message
-      console.error('Error fetching game details:', err)
-    } finally {
-      loading.value = false
-    }
+    const response = await fetch(url)
+    const data = await response.json()
+    
+    return data
+  } catch (err) {
+    error.value = err.message
+    console.error('Error fetching game details:', err)
+  } finally {
+    loading.value = false
   }
+}
+
 
   // 4. Get New Releases (for NewReleases page)
   const getNewReleases = async (pageSize = 20) => {
@@ -229,7 +229,6 @@ const getTrendingGames = async (pageSize = 20, filters = {}) => {
   }
 }
 
-// Add to return statement
 return {
   games,
   loading,
@@ -237,11 +236,11 @@ return {
   getPopularGames,
   getNewReleases,
   getTrendingGames,
-  getGenres,        // ADD
-  getPlatforms,     // ADD
   getTop100Games,
+  getGenres,
+  getPlatforms,
   searchGames,
-  getGameDetails
+  getGameDetails  
 }
 
   

@@ -44,9 +44,9 @@
             class="w-full h-[300px] object-cover block"
           />
           <div class="bg-gray-800 h-full p-3 cursor-pointer">
-            <a href="#">
+            <router-link :to="`/game/${game.id}`" class="block">
               <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
-            </a>
+            </router-link>
             <div class="flex justify-between items-center mt-2">
              <p v-if="game.metacritic" class="text-[#A80ADD] text-lg font-bold">
                Metacritic score: {{ game.metacritic }}
