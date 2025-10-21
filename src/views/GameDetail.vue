@@ -175,21 +175,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
 
 const route = useRoute()
-const { getGameDetails,  } = useRawgAPI()
+const { getGameDetails } = useRawgAPI()
 
 const game = ref(null)
 const screenshots = ref([])
 const loading = ref(false)
 const error = ref(null)
 const isFavorited = ref(false)
-
-const gameId = route.params.id
 
 // Format date
 const formatDate = (dateString) => {
@@ -206,7 +204,7 @@ const formatDate = (dateString) => {
 const toggleFavorite = () => {
   isFavorited.value = !isFavorited.value
   // TODO: Connect to useFavorites composable
-  console.log('Toggle favorite for:', game.value.name)
+  console.log('Toggle favorite for:', game.value?.name)
 }
 
 // Open screenshot
@@ -215,11 +213,11 @@ const openScreenshot = (imageUrl) => {
 }
 
 // Fetch game details
-onMounted(async () => {
+const fetchGameDetails = async () => {
   loading.value = true
   try {
+    const gameId = route.params.id
     game.value = await getGameDetails(gameId)
-    
     // Fetch screenshots
     if (game.value) {
       const screenshotsUrl = `https://api.rawg.io/api/games/${gameId}/screenshots?key=${import.meta.env.VITE_RAWG_API_KEY}`
@@ -227,7 +225,6 @@ onMounted(async () => {
       const data = await response.json()
       screenshots.value = data.results || []
     }
-    
     error.value = null
   } catch (e) {
     error.value = 'Failed to load game details'
@@ -235,7 +232,13 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
+
+// Fetch game details on mount
+onMounted(fetchGameDetails)
+
+// Watch for route changes and refetch
+watch(() => route.params.id, fetchGameDetails)
 </script>
 
 <style scoped>

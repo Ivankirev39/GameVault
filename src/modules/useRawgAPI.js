@@ -1,8 +1,3 @@
-const API_KEY = import.meta.env.VITE_RAWG_API_KEY
-
-
-
-
 import { ref } from 'vue'
 
 export function useRawgAPI() {

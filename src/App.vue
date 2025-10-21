@@ -1,14 +1,39 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { ref, watch } from 'vue'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import AuthButton from './components/AuthButton.vue'
+import { useRawgAPI } from './modules/useRawgAPI'
 
+const searchQuery = ref('')
+const showDropdown = ref(false)
+const searchResults = ref([])
+const { searchGames } = useRawgAPI()
+const router = useRouter()
+
+// Watch for input changes and fetch results
+watch(searchQuery, async (val) => {
+  if (val && val.trim().length > 1) {
+    showDropdown.value = true
+    const results = await searchGames(val)
+    searchResults.value = results.slice(0) // Show all results
+  } else {
+    showDropdown.value = false
+    searchResults.value = []
+  }
+})
+
+// Handle selection from dropdown
+const selectGame = (game) => {
+  showDropdown.value = false
+  searchQuery.value = ''
+  searchResults.value = []
+  router.push(`/game/${game.id}`)
+}
 </script>
 
 <template>
-  
-
 <nav class="z-20 w-full bg-[#141414]">
-<div class="flex flex-wrap items-center justify-between px-4 py-4">
+  <div class="flex flex-wrap items-center justify-between px-4 py-4">
     <RouterLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <span class="self-center text-4xl font-semibold text-[#A80ADD]">GameVault</span>
     </RouterLink>
@@ -30,7 +55,7 @@ import AuthButton from './components/AuthButton.vue'
       </ul>
     </div>
 
-  
+    <!-- SEARCH BAR WITH DROPDOWN -->
     <div class="relative hidden w-64 md:order-2 md:block">
       <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
         <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -38,7 +63,30 @@ import AuthButton from './components/AuthButton.vue'
         </svg>
         <span class="sr-only">Search icon</span>
       </div>
-      <input type="text" id="search-navbar" class="block w-[350px] rounded-lg border border-gray-900 bg-gray-800 p-2 ps-10 text-sm text-gray-50 focus:border-blue-500 focus:ring-blue-500" placeholder="Search..." />
+      <input
+        type="text"
+        id="search-navbar"
+        v-model="searchQuery"
+        @focus="showDropdown = !!searchResults.length"
+        @blur="setTimeout(() => showDropdown = false, 150)"
+        class="block w-[350px] rounded-lg border border-gray-900 bg-gray-800 p-2 ps-10 text-sm text-gray-50 focus:border-blue-500 focus:ring-blue-500"
+        placeholder="Search..."
+        autocomplete="off"
+      />
+      <!-- DROPDOWN -->
+      <ul
+        v-if="showDropdown && searchResults.length"
+        class="absolute left-0 z-30 mt-1 w-full rounded-lg bg-gray-900 shadow-lg"
+      >
+        <li
+          v-for="game in searchResults"
+          :key="game.id"
+          @mousedown.prevent="selectGame(game)"
+          class="cursor-pointer px-4 py-2 text-gray-100 hover:bg-[#A80ADD] hover:text-white"
+        >
+          {{ game.name }}
+        </li>
+      </ul>
     </div>
 
     <!-- AUTH BUTTONS -->
@@ -49,11 +97,6 @@ import AuthButton from './components/AuthButton.vue'
 </nav> 
 
 
-<!-- 
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-
-        <AuthButton /> -->
 
      
         
@@ -64,5 +107,5 @@ import AuthButton from './components/AuthButton.vue'
 </template>
 
 <style scoped>
-
+/* Optional: style for dropdown */
 </style>
