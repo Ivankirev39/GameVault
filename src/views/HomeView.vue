@@ -12,7 +12,7 @@
       <!-- Header + Carousel Row -->
       <div class="flex items-center justify-between">
         <h2 id="popular-games" class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
-          Top Rated Games
+          Players Choice
         </h2>
         
         <div class="flex w-[250px] h-[60px] items-center justify-between rounded-md bg-[#121212] p-2">

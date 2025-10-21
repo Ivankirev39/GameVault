@@ -30,9 +30,9 @@ const router = createRouter({
     component: () => import('../views/NewAndTrending.vue') 
   },
   {
-    path: '/top-100',
-    name: 'Top100',
-    component: () => import('../views/Top100.vue')  
+    path: '/goats',
+    name: 'Goats',
+    component: () => import('../views/Goats.vue')  
   },
   {
     path: '/game/:id', 

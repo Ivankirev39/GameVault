@@ -150,8 +150,8 @@ const getGameDetails = async (gameId) => {
     }
   }
 
-  // 5. Get Top 100 Games (for Top100 page)
-  const getTop100Games = async () => {
+  // 5. Get Best Rated Games (for GOAT page)
+  const getBestRatedGames = async (filters = {}) => {
     loading.value = true
     error.value = null
     
@@ -159,7 +159,9 @@ const getGameDetails = async (gameId) => {
       const url = buildURL('/games', {
         page_size: 100,
         ordering: '-metacritic', // Sort by Metacritic score
-        metacritic: '80,100' // Only highly rated games
+        metacritic: '80,100', // Only highly rated games
+        genres: filters.genre,
+        platforms: filters.platform
       })
       
       const response = await fetch(url)
@@ -203,18 +205,22 @@ const getPlatforms = async () => {
   }
 }
 
-// Update your existing getTrendingGames to accept filters
 const getTrendingGames = async (pageSize = 20, filters = {}) => {
   loading.value = true
   error.value = null
   
   try {
+    // Get games from last 3 months that are highly rated
+    const threeMonthsAgo = new Date()
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
+    const dateString = threeMonthsAgo.toISOString().split('T')[0]
+    const today = new Date().toISOString().split('T')[0]
+    
     const url = buildURL('/games', {
       page_size: pageSize,
-      ordering: '-added',
-      exclude_additions: 1,
-      genres: filters.genre,      // Add genre filter
-      platforms: filters.platform // Add platform filter
+      dates: `${dateString},${today}`,  // Last 3 months
+      ordering: filters.ordering || '-rating', // Use ordering from filters, default to rating
+      exclude_additions: 1
     })
     
     const response = await fetch(url)
@@ -236,7 +242,7 @@ return {
   getPopularGames,
   getNewReleases,
   getTrendingGames,
-  getTop100Games,
+  getBestRatedGames,
   getGenres,
   getPlatforms,
   searchGames,

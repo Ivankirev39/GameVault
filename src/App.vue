@@ -25,7 +25,7 @@ import AuthButton from './components/AuthButton.vue'
           <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New and Trending</RouterLink>
         </li>
         <li>
-          <RouterLink to="/top-100" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Top 100</RouterLink>
+          <RouterLink to="/goats" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">GOAT</RouterLink>
         </li>
       </ul>
     </div>
