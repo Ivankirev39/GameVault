@@ -49,24 +49,23 @@
       <div v-if="trendingError" class="text-red-500 p-[20px]">{{ trendingError }}</div>
       <!-- Games Grid -->
       <div v-if="!trendingLoading && trending.length > 0" class="flex flex-wrap gap-5">
-        <div
+        <router-link
           v-for="game in trending"
           :key="game.id"
+          :to="`/game/${game.id}`"
           class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300"
-          style="flex: 1 1 250px; min-width: 280px;"
+          style="flex: 1 1 250px; min-width: 280px; text-decoration: none;"
         >
           <img
             :src="game.background_image"
             :alt="game.name"
             class="w-full h-[300px] object-cover"
           />
-               <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
-            <router-link :to="`/game/${game.id}`" class="block">
-              <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
-            </router-link>
+          <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
+            <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
             <p class="text-gray-300">Rating: {{ game.rating }}/5</p>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
 </section>

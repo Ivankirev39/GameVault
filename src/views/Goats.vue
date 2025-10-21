@@ -115,36 +115,34 @@
     <!-- GOAT Grid -->
     <div v-if="!loading && top100Games.length > 0" class="mx-auto max-w-7xl px-4 mt-10">
       <div class="flex flex-wrap gap-5">
-        <div
+        <router-link
           v-for="(game, index) in top100Games"
           :key="game.id"
+          :to="`/game/${game.id}`"
           class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300 relative"
-          style="flex: 1 1 250px; min-width: 280px;"
+          style="flex: 1 1 250px; min-width: 280px; text-decoration: none;"
         >
           <!-- Rank Badge -->
           <div class="absolute top-2 left-2 bg-[#A80ADD] text-[#f4f4f4] font-bold text-xl px-3 py-1 rounded-full">
             #{{ index + 1 }}
           </div>
-
           <img
             :src="game.background_image"
             :alt="game.name"
             class="w-full h-[300px] object-cover block"
           />
           <div class="bg-gray-800 h-full p-3 cursor-pointer">
-            <router-link :to="`/game/${game.id}`" class="block">
-              <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
-            </router-link>
+            <h5 class="text-2xl font-bold text-[#f4f4f4]">{{ game.name }}</h5>
             <div class="flex justify-between items-center mt-2">
-             <p v-if="game.metacritic" class="text-[#A80ADD] text-lg font-bold">
-               Metacritic score: {{ game.metacritic }}
+              <p v-if="game.metacritic" class="text-[#A80ADD] text-lg font-bold">
+                Metacritic score: {{ game.metacritic }}
               </p>
             </div>
             <p v-if="game.genres && game.genres.length" class="text-gray-300 text-lg mt-1">
               {{ game.genres[0]?.name }}
             </p>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
 

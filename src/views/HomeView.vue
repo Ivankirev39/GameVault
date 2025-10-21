@@ -62,26 +62,23 @@
     
 <!-- Games grid -->
 <div v-if="!loading && games.length > 0" class="flex flex-wrap gap-5">
-  <div
+  <router-link
     v-for="game in pagedGames"
     :key="game.id"
+    :to="`/game/${game.id}`"
     class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden m-2 hover:scale-105 transition-transform duration-300"
-    style="flex: 1 1 250px; min-width: 280px;"
+    style="flex: 1 1 250px; min-width: 280px; text-decoration: none;"
   >
-
     <img
       :src="game.background_image"
       :alt="game.name"
       class="w-full h-[300px] object-cover"
     />
-      <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
-        <!-- changed: use router-link to navigate to /game/:id -->
-        <router-link :to="`/game/${game.id}`" class="block">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
-        </router-link>
-        <p class="mb-3 font-normal text-gray-300">Rating: {{ game.rating }}/5</p>
-</div>
-  </div>
+    <div class="w-full h-full bg-gray-800  p-3 cursor-pointer">
+      <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
+      <p class="mb-3 font-normal text-gray-300">Rating: {{ game.rating }}/5</p>
+    </div>
+  </router-link>
 </div>
 
     <!-- New Releases Carousel -->
@@ -126,11 +123,12 @@
       <div v-if="newLoading" class="bg-[#f4f4f4] p-[10px]">Loading new releases...</div>
       <div v-if="newError" class="error text-red-500 p-[20px]">{{ newError }}</div>
       <div v-if="!newLoading && newReleases.length > 0" class="flex flex-wrap gap-5">
-        <div
+        <router-link
           v-for="game in pagedNewReleases"
           :key="game.id"
+          :to="`/game/${game.id}`"
           class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden m-2 hover:scale-105 transition-transform duration-300"
-          style="flex: 1 1 250px; min-width: 280px;"
+          style="flex: 1 1 250px; min-width: 280px; text-decoration: none;"
         >
           <img
             :src="game.background_image"
@@ -138,13 +136,10 @@
             class="w-full h-[300px] object-cover"
           />
           <div class="w-full h-full bg-gray-800  p-3 shadow-sm cursor-pointer">
-            <!-- changed: use router-link to navigate to /game/:id -->
-            <router-link :to="`/game/${game.id}`" class="block">
-              <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
-            </router-link>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4]">{{ game.name }}</h5>
             <p class="mb-3 font-normal text-gray-300">Released: {{ game.released }}</p>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
 

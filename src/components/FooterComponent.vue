@@ -24,10 +24,10 @@
               <Routerlink to="/" class="hover:underline">Browse</Routerlink>
             </li>
             <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">New releases</Routerlink>
+              <RouterLink to="/new-trending" class="hover:underline">New and Trending</RouterLink>
             </li>
               <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">Top Rated</Routerlink>
+              <RouterLink to="/goats" class="hover:underline">GOAT</RouterLink>
             </li>
           </ul>
         </div>
@@ -50,7 +50,7 @@
 
 
 <script setup>
-
+import { RouterLink } from 'vue-router'
 
 </script>
 
