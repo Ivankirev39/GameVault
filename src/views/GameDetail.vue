@@ -136,19 +136,23 @@
 
         <!-- Where to Buy -->
         <div v-if="game.stores && game.stores.length">
-          <h2 class="text-2xl font-bold mb-6">Where to buy</h2>
-          <div class="flex flex-wrap gap-4">
-            <a 
-              v-for="store in game.stores.slice(0, 4)" 
-              :key="store.id"
-              :href="store.url || '#'"
-              target="_blank"
-              class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
-            >
-              <span class="text-2xl">🎮</span>
-            </a>
-          </div>
-        </div>
+    <div v-if="game.stores && game.stores.length">
+  <h2 class="text-2xl font-bold mb-6">Where to buy</h2>
+  <div class="flex flex-wrap gap-4">
+  <a 
+  v-for="store in game.stores.slice(0, 4)" 
+  :key="store.id"
+  :href="getStoreUrl(store)"
+  target="_blank"
+  class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
+>
+  <span class="text-2xl">
+    {{ getStoreIcon(store.store.slug) }}
+  </span>
+</a>
+  </div>
+</div>
+</div>
 
       </div>
 
@@ -179,15 +183,18 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
+// Add import for favorites composable
+import { useFavorites } from '../modules/useFavorites.js'
 
 const route = useRoute()
 const { getGameDetails } = useRawgAPI()
+// Use favorites composable
+const { isFavorited, addFavorite, removeFavorite, checkFavorite } = useFavorites()
 
 const game = ref(null)
 const screenshots = ref([])
 const loading = ref(false)
 const error = ref(null)
-const isFavorited = ref(false)
 
 // Format date
 const formatDate = (dateString) => {
@@ -201,10 +208,18 @@ const formatDate = (dateString) => {
 }
 
 // Toggle favorite
-const toggleFavorite = () => {
-  isFavorited.value = !isFavorited.value
-  // TODO: Connect to useFavorites composable
-  console.log('Toggle favorite for:', game.value?.name)
+const toggleFavorite = async () => {
+  if (!game.value) return
+  if (isFavorited.value) {
+    await removeFavorite(game.value.id)
+  } else {
+    await addFavorite({
+      id: game.value.id,
+      name: game.value.name,
+      background_image: game.value.background_image
+    })
+  }
+  await checkFavorite(game.value.id)
 }
 
 // Open screenshot
@@ -224,6 +239,8 @@ const fetchGameDetails = async () => {
       const response = await fetch(screenshotsUrl)
       const data = await response.json()
       screenshots.value = data.results || []
+      // Check if this game is favorited
+      await checkFavorite(game.value.id)
     }
     error.value = null
   } catch (e) {
@@ -231,6 +248,30 @@ const fetchGameDetails = async () => {
     console.error(e)
   } finally {
     loading.value = false
+  }
+}
+
+// Helper to construct store URL (Only takes you to store homepage, because RAWG API doesn't provide direct purchase links)
+const getStoreUrl = (store) => {
+  // Use direct URL if available
+  if (store.url) return store.url
+  // Fallback to store homepage
+  if (store.store && store.store.domain) {
+    return `https://${store.store.domain}`
+  }
+  return '#'
+}
+
+
+const getStoreIcon = (slug) => {
+  switch (slug) {
+    case 'steam': return '🟦'
+    case 'epic-games': return '🟪'
+    case 'gog': return '🟩'
+    case 'playstation-store': return '🎮'
+    case 'xbox-store': return '🟦'
+    case 'nintendo': return '🔴'
+    default: return '🛒'
   }
 }
 

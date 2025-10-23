@@ -12,7 +12,9 @@
   <ul>
     <li v-for="game in games" :key="game.id">
       {{ game.title }}
-      <button @click="deleteGame(game.id)"></button>
+      <button @click="deleteGame(game.id)">Delete</button>
+      <!-- Optional: Add Edit button for update functionality -->
+      <!-- <button @click="editGame(game)">Edit</button> -->
       <span v-if="newGameTitle.trim() === ''"></span>
     </li>
   </ul>

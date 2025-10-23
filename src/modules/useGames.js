@@ -32,13 +32,9 @@ const addGame = async () => {
 }
 
 const deleteGame = async (id) => {
-  try{
-    await addDoc(collection(db, gamesCollectionRef), {
-      title: newGameTitle.value
-    })
-    newGameTitle.value = ''
-  }
-  catch (error) {
+  try {
+    await deleteDoc(doc(gamesCollectionRef, id))
+  } catch (error) {
     console.error("Error deleting document: ", error);
   }
 }

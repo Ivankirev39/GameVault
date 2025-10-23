@@ -115,7 +115,7 @@ const selectSort = (value, name) => {
 const fetchTrendingGames = async () => {
   trendingLoading.value = true
   try {
-    trending.value = await getTrendingGames(12, { ordering: selectedSort.value })
+    trending.value = await getTrendingGames(18, { ordering: selectedSort.value })
     trendingError.value = null
   } catch (e) {
     trendingError.value = 'Failed to load trending games'

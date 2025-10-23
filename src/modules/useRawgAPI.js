@@ -61,11 +61,6 @@ const getPopularGames = async (pageSize = 20, filters = {}) => {
 
 // 2. Search Games (for SearchBar)
 const searchGames = async (query, filters = {}) => {
-  if (!query || query.trim() === '') {
-    games.value = []
-    return []
-  }
-
   loading.value = true
   error.value = null
 
@@ -75,15 +70,25 @@ const searchGames = async (query, filters = {}) => {
       page_size: filters.pageSize || 20,
       genres: filters.genre,
       platforms: filters.platform,
-      ordering: filters.ordering || '-rating'
+      ordering: filters.ordering || '-rating',
+      dates: filters.dates,
+      tags: filters.tags
     })
 
     const response = await fetch(url)
+    if (!response.ok) throw new Error(`API Error: ${response.status}`)
     const data = await response.json()
-    // Filter NSFW unless allowed
-    const filtered = (filters.allowNSFW)
+    let filtered = (filters.allowNSFW)
       ? data.results
       : data.results.filter(game => !isNSFW(game))
+
+    // Prioritize exact name match
+    filtered = filtered.sort((a, b) => {
+      if (a.name.toLowerCase() === query.toLowerCase()) return -1
+      if (b.name.toLowerCase() === query.toLowerCase()) return 1
+      return 0
+    })
+
     games.value = filtered
     return filtered
   } catch (err) {
@@ -249,6 +254,7 @@ return {
   getPlatforms,
   searchGames,
   getGameDetails  
+  
 }
 
   
