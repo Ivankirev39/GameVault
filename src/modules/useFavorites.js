@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { db } from './firebase'
 import { useAuth } from './useAuth'
-import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore'
+import { doc, setDoc, deleteDoc, getDoc, collection, getDocs } from 'firebase/firestore'
 
 const isFavorited = ref(false)
 
@@ -39,10 +39,12 @@ export function useFavorites() {
     isFavorited.value = favSnap.exists()
   }
 
+
   return {
     isFavorited,
     addFavorite,
     removeFavorite,
-    checkFavorite
+    checkFavorite,
+    
   }
 }

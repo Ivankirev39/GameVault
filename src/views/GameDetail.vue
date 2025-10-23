@@ -1,5 +1,5 @@
 <template>
-  <section class="game-detail min-h-screen text-white">
+  <section class="game-detail min-h-screen text-[#f4f4f4]">
     <!-- Loading State -->
     <div v-if="loading" class="mx-auto max-w-7xl px-4 py-20">
       <div class="bg-[#f4f4f4] text-black p-4 rounded">Loading game details...</div>
@@ -42,7 +42,7 @@
           <!-- Add to Favorites Button -->
           <button 
             @click="toggleFavorite"
-            class="w-full bg-transparent border-2 border-[#A80ADD] text-[#A80ADD] hover:bg-[#A80ADD] hover:text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg"
+            class="w-full bg-transparent border-2 border-[#A80ADD] text-[#A80ADD] hover:bg-[#A80ADD] hover:text-[#f4f4f4] font-bold py-3 px-6 rounded-lg transition-colors text-lg"
           >
             {{ isFavorited ? '- Remove from favorites' : '+ Add to favorites' }}
           </button>
@@ -66,7 +66,7 @@
             <div class="space-y-4">
               <!-- Platforms -->
               <div v-if="game.platforms && game.platforms.length">
-                <h3 class="text-white font-semibold mb-2">Platforms</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Platforms</h3>
                 <p class="text-gray-300">
                   {{ game.platforms.slice(0).map(p => p.platform.name).join(', ') }}
                 </p>
@@ -74,13 +74,13 @@
 
               <!-- Developer -->
               <div v-if="game.developers && game.developers.length">
-                <h3 class="text-white font-semibold mb-2">Developer</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Developer</h3>
                 <p class="text-gray-300">{{ game.developers[0].name }}</p>
               </div>
 
               <!-- Genre -->
               <div v-if="game.genres && game.genres.length">
-                <h3 class="text-white font-semibold mb-2">Genre</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Genre</h3>
                 <p class="text-gray-300">{{ game.genres.map(g => g.name).join(', ') }}</p>
               </div>
             </div>
@@ -89,19 +89,19 @@
             <div class="space-y-4">
               <!-- Release Date -->
               <div v-if="game.released">
-                <h3 class="text-white font-semibold mb-2">Release date</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Release date</h3>
                 <p class="text-gray-300">{{ formatDate(game.released) }}</p>
               </div>
 
               <!-- Publisher -->
               <div v-if="game.publishers && game.publishers.length">
-                <h3 class="text-white font-semibold mb-2">Publisher</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Publisher</h3>
                 <p class="text-gray-300">{{ game.publishers.map(p => p.name).join(', ') }}</p>
               </div>
 
               <!-- Age Rating -->
               <div v-if="game.esrb_rating">
-                <h3 class="text-white font-semibold mb-2">Age Rating</h3>
+                <h3 class="text-[#f4f4f4] font-semibold mb-2">Age Rating</h3>
                 <p class="text-gray-300">{{ game.esrb_rating.name }}</p>
               </div>
             </div>
@@ -121,12 +121,12 @@
   <!-- Rating & Metacritic -->
   <div class="flex gap-4 mb-4">
     <div class="bg-[#A80ADD] px-4 py-2 rounded-lg">
-      <span class="text-white font-bold text-lg">
+      <span class="text-[#f4f4f4] font-bold text-lg">
         ⭐ {{ game.rating }}/5
       </span>
     </div>
      <div v-if="game.metacritic" class="bg-green-600 px-4 py-2 rounded-lg">
-      <span class="text-white font-bold text-lg">
+      <span class="text-[#f4f4f4]font-bold text-lg">
         Metacritic: {{ game.metacritic }}
       </span>
     </div>
