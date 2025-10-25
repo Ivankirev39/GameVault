@@ -39,6 +39,12 @@ const router = createRouter({
     name: 'GameDetail',
     component: () => import('../views/GameDetail.vue')
   },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('../views/ProfileView.vue'),
+    meta: { requiresAuth: true }
+  }
   ],
 
 })

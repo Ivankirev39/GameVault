@@ -3,6 +3,8 @@ import { ref, watch } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import AuthButton from './components/AuthButton.vue'
 import { useRawgAPI } from './modules/useRawgAPI'
+import { useAuth } from './modules/useAuth'
+const { isLoggedIn } = useAuth()
 
 const searchQuery = ref('')
 const showDropdown = ref(false)
@@ -88,10 +90,22 @@ const selectGame = (game) => {
         </li>
       </ul>
     </div>
+     
+  
 
     <!-- AUTH BUTTONS -->
-    <div class="flex space-x-3 md:order-3 md:space-x-3 rtl:space-x-reverse">
-       <AuthButton />
+    <div class="flex space-x-2  md:order-4 md:space-x-2 rtl:space-x-reverse items-center">
+     
+       <RouterLink to ="/profile" 
+         v-if="isLoggedIn"
+         class="auth-btn !bg-[#A80ADD] font-medium"
+         style="margin-left: 0;"
+       >
+    <!-- This disappears when the user is not logged in -->
+         My Profile
+       </RouterLink>
+
+         <AuthButton />
     </div>
   </div>
 </nav> 
@@ -108,4 +122,13 @@ const selectGame = (game) => {
 
 <style scoped>
 /* Optional: style for dropdown */
+.auth-btn {
+    margin: 0 16px;
+    padding: 8px 16px;
+    background-color: #333;
+    color: #ededed;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
 </style>
