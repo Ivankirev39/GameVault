@@ -40,6 +40,16 @@ const router = createRouter({
     component: () => import('../views/GameDetail.vue')
   },
   {
+  path: '/developer/:id',
+  name: 'DeveloperGames',
+  component: () => import('../views/DeveloperGames.vue')
+},
+{
+  path: '/publisher/:id',
+  name: 'PublisherGames',
+  component: () => import('../views/PublisherGames.vue')
+},
+  {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/ProfileView.vue'),

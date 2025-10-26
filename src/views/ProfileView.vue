@@ -34,7 +34,7 @@
                 <p><span class="font-semibold">Total favorites:</span> {{ favorites.length }} games</p>
                 <p><span class="font-semibold">Preferred genre:</span> {{ preferredGenre }}</p>
                 <p><span class="font-semibold">Preferred Platform:</span> {{ preferredPlatform }}</p>
-                <p><span class="font-semibold">Collection Value:</span> ${{ collectionValue }}</p>
+                <p><span class="font-semibold">Favorites Value:</span> ${{ collectionValue }}</p>
               </div>
             </div>
           </div>

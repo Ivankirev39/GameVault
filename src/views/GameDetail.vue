@@ -73,10 +73,15 @@
               </div>
 
               <!-- Developer -->
-              <div v-if="game.developers && game.developers.length">
-                <h3 class="text-[#f4f4f4] font-semibold mb-2">Developer</h3>
-                <p class="text-gray-300">{{ game.developers[0].name }}</p>
-              </div>
+            <div v-if="game.developers && game.developers.length">
+  <h3 class="text-[#f4f4f4] font-semibold mb-2">Developer</h3>
+  <router-link
+    :to="`/developer/${game.developers[0].id}`"
+    class="text-[#A80ADD] hover:underline"
+  >
+    {{ game.developers[0].name }}
+  </router-link>
+</div>
 
               <!-- Genre -->
               <div v-if="game.genres && game.genres.length">
@@ -96,8 +101,12 @@
               <!-- Publisher -->
               <div v-if="game.publishers && game.publishers.length">
                 <h3 class="text-[#f4f4f4] font-semibold mb-2">Publisher</h3>
-                <p class="text-gray-300">{{ game.publishers.map(p => p.name).join(', ') }}</p>
-              </div>
+  <router-link
+    :to="`/publisher/${game.publishers[0].id}`"
+    class="text-[#A80ADD] hover:underline"
+  >
+    {{ game.publishers[0].name }}
+  </router-link>              </div>
 
               <!-- Age Rating -->
               <div v-if="game.esrb_rating">

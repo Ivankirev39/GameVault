@@ -242,6 +242,47 @@ const getTrendingGames = async (pageSize = 20, filters = {}) => {
   }
 }
 
+const getGamesByDeveloper = async (developerId, pageSize = 40) => {
+  loading.value = true
+  error.value = null
+  try {
+    const url = buildURL('/games', {
+      developers: developerId,
+      page_size: pageSize
+    })
+    const response = await fetch(url)
+    const data = await response.json()
+    games.value = data.results
+    return data.results
+  } catch (err) {
+    error.value = err.message
+    return []
+  } finally {
+    loading.value = false
+  }
+}
+
+const getGamesByPublisher = async (publisherId, pageSize = 40) => {
+  loading.value = true
+  error.value = null
+  try {
+    const url = buildURL('/games', {
+      publishers: publisherId,
+      page_size: pageSize
+    })
+    const response = await fetch(url)
+    const data = await response.json()
+    games.value = data.results
+    return data.results
+  } catch (err) {
+    error.value = err.message
+    return []
+  } finally {
+    loading.value = false
+  }
+}
+
+
 return {
   games,
   loading,
@@ -253,8 +294,9 @@ return {
   getGenres,
   getPlatforms,
   searchGames,
-  getGameDetails  
-  
+  getGameDetails,  
+  getGamesByDeveloper,
+  getGamesByPublisher,
 }
 
   
