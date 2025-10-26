@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { db } from './firebase'
 import { useAuth } from './useAuth'
-import { doc, setDoc, deleteDoc, getDoc, collection, getDocs } from 'firebase/firestore'
+import { doc, setDoc, deleteDoc, getDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore'
 
 const isFavorited = ref(false)
 
@@ -10,14 +10,21 @@ export function useFavorites() {
 
   // Add favorite
   const addFavorite = async (game) => {
-    if (!currentUser.value) return
-    const favRef = doc(db, `users/${currentUser.value.uid}/favorites/${game.id}`)
-    await setDoc(favRef, {
-      name: game.name,
-      background_image: game.background_image,
-      addedAt: new Date()
-    })
-    isFavorited.value = true
+    if (!currentUser.value) {
+      console.error('User not logged in')
+      return
+    }
+    try {
+      const favRef = doc(db, `users/${currentUser.value.uid}/favorites/${game.id}`)
+      await setDoc(favRef, {
+        name: game.name,
+        background_image: game.background_image,
+        addedAt: serverTimestamp()
+      })
+      isFavorited.value = true
+    } catch (e) {
+      console.error('Failed to add favorite:', e)
+    }
   }
 
   // Remove favorite

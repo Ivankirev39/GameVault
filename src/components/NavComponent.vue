@@ -93,7 +93,7 @@ const selectGame = (game) => {
     <div class="flex space-x-2  md:order-4 md:space-x-2 rtl:space-x-reverse items-center">
       <RouterLink to="/profile"
         v-if="isLoggedIn"
-        class="auth-btn !bg-[#A80ADD] font-medium"
+        class="auth-btn !bg-[#A80ADD] hover:!bg-[#121212] !border !border-[#A80ADD] font-medium"
         style="margin-left: 0;"
       >
         My Profile
