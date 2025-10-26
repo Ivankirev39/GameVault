@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left Column - User Profile Card -->
         <div class="lg:col-span-1">
-<div class="bg-gradient-to-t from-[#1c1c1c] via-[#1a1a1a] to-[#A80ADD] rounded-lg p-6 text-white">
+          <div class="bg-gradient-to-t from-[#1c1c1c] via-[#1a1a1a] to-[#A80ADD] rounded-lg p-6 text-white">
             <!-- Join Date -->
             <div class="text-center mb-6">
               <p class="text-lg font-bold">Join date {{ memberSince }}</p>
@@ -32,8 +32,7 @@
               <h3 class="text-2xl font-bold mb-6 border-b border-[#A80ADD] pb-2">Stats</h3>
               <div class="space-y-4 text-lg text-[#f4f4f4]">
                 <p><span class="font-semibold">Total favorites:</span> {{ favorites.length }} games</p>
-                <p><span class="font-semibold">Preferred genre:</span> {{ preferredGenre }}</p>
-                <p><span class="font-semibold">Preferred Platform:</span> {{ preferredPlatform }}</p>
+                <p><span class="font-semibold">Most Recent Favorite:</span> {{ mostRecentFavorite }}</p>
                 <p><span class="font-semibold">Favorites Value:</span> ${{ collectionValue }}</p>
               </div>
             </div>
@@ -132,16 +131,9 @@ const memberSince = computed(() => {
 })
 
 // Calculate stats
-const preferredGenre = computed(() => {
+const mostRecentFavorite = computed(() => {
   if (favorites.value.length === 0) return 'N/A'
-  // TODO: Calculate from favorites data if available
-  return 'N/A'
-})
-
-const preferredPlatform = computed(() => {
-  if (favorites.value.length === 0) return 'N/A'
-  // TODO: Calculate from favorites data if available
-  return 'N/A'
+  return favorites.value[favorites.value.length - 1]?.name || 'N/A'
 })
 
 const collectionValue = computed(() => {

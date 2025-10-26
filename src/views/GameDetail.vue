@@ -74,14 +74,14 @@
 
               <!-- Developer -->
             <div v-if="game.developers && game.developers.length">
-  <h3 class="text-[#f4f4f4] font-semibold mb-2">Developer</h3>
-  <router-link
-    :to="`/developer/${game.developers[0].id}`"
-    class="text-[#A80ADD] hover:underline"
-  >
-    {{ game.developers[0].name }}
-  </router-link>
-</div>
+              <h3 class="text-[#f4f4f4] font-semibold mb-2">Developer</h3>
+              <router-link
+                :to="`/developer/${game.developers[0].id}`"
+                class="text-[#f4f4f4] underline text-decoration-[#f4f4f4] hover:text-gray-400"
+              >
+                {{ game.developers[0].name }}
+              </router-link>
+            </div>
 
               <!-- Genre -->
               <div v-if="game.genres && game.genres.length">
@@ -101,12 +101,13 @@
               <!-- Publisher -->
               <div v-if="game.publishers && game.publishers.length">
                 <h3 class="text-[#f4f4f4] font-semibold mb-2">Publisher</h3>
-  <router-link
-    :to="`/publisher/${game.publishers[0].id}`"
-    class="text-[#A80ADD] hover:underline"
-  >
-    {{ game.publishers[0].name }}
-  </router-link>              </div>
+                <router-link
+                  :to="`/publisher/${game.publishers[0].id}`"
+                  class="text-[#f4f4f4] underline text-decoration-[#f4f4f4] hover:text-gray-400"
+                >
+                  {{ game.publishers[0].name }}
+                </router-link>             
+               </div>
 
               <!-- Age Rating -->
               <div v-if="game.esrb_rating">
@@ -293,10 +294,7 @@ watch(() => route.params.id, fetchGameDetails)
 
 <style scoped>
 /* Remove default link styles from description HTML */
-:deep(a) {
-  color: #A80ADD;
 
-}
 
 :deep(p) {
   margin-bottom: 1rem;
