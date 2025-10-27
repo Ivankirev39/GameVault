@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left Column - User Profile Card -->
         <div class="lg:col-span-1">
-          <div class="bg-gradient-to-t from-[#1c1c1c] via-[#1a1a1a] to-[#A80ADD] rounded-lg p-6 text-white">
+          <div class="bg-gradient-to-t from-[#1c1c1c] via-[#1a1a1a] to-[#A80ADD] rounded-lg p-6 text-[#f4f4f4]">
             <!-- Join Date -->
             <div class="text-center mb-6">
               <p class="text-lg font-bold">Join date {{ memberSince }}</p>
@@ -41,7 +41,7 @@
         <!-- Right Column - Favorite Games -->
         <div class="lg:col-span-2">
           <div class="mb-6">
-            <h2 class="text-4xl font-bold text-white mb-2">Favorite Games</h2>
+            <h2 class="text-4xl font-bold text-[#f4f4f4] mb-2">Favorite Games</h2>
             <hr class="border-[#A80ADD] border-2" />
           </div>
           <!-- Loading State -->
@@ -70,7 +70,7 @@
               <!-- Remove Button (X) -->
               <button 
                 @click.stop.prevent="removeFavorite(game.id)"
-                class="absolute top-2 right-2 z-10 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer transition-colors"
+                class="absolute top-2 right-2 z-10 bg-red-600 hover:bg-red-700 text-[#f4f4f4] w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer transition-colors"
                 style="box-shadow: 0 2px 8px rgba(0,0,0,0.2);"
                 title="Remove from favorites"
               >

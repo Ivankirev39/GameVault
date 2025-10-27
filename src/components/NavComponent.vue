@@ -41,16 +41,16 @@ const selectGame = (game) => {
     <div class="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto" id="navbar-sticky">
       <ul class="flex flex-row space-x-8 md:text-xl">
         <li>
-          <RouterLink to="/"  class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Home</RouterLink>
+          <RouterLink to="/"  class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Home</RouterLink>
         </li>
         <li>
-          <RouterLink to="/about" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Browse</RouterLink>
+          <RouterLink to="/about" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Browse</RouterLink>
         </li>
         <li>
-          <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New and Trending</RouterLink>
+          <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New and Trending</RouterLink>
         </li>
         <li>
-          <RouterLink to="/goats" class="block rounded-sm px-3 py-2 text-white hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">GOAT</RouterLink>
+          <RouterLink to="/goats" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">GOAT</RouterLink>
         </li>
       </ul>
     </div>
@@ -82,7 +82,7 @@ const selectGame = (game) => {
           v-for="game in searchResults"
           :key="game.id"
           @mousedown.prevent="selectGame(game)"
-          class="cursor-pointer px-4 py-2 text-gray-100 hover:bg-[#A80ADD] hover:text-white"
+          class="cursor-pointer px-4 py-2 text-gray-100 hover:bg-[#A80ADD] hover:text-[#f4f4f4]"
         >
           {{ game.name }}
         </li>

@@ -28,7 +28,7 @@
             <li v-for="option in sortOptions" :key="option.value">
               <button 
                 @click="selectSort(option.value, option.name)"
-                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-white"
+                class="block w-full text-left px-4 py-2 hover:bg-gray-600 hover:text-[#f4f4f4]"
               >
                 {{ option.name }}
               </button>

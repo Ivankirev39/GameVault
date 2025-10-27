@@ -7,10 +7,10 @@
           <h2 class="mb-6 md:text-2xl font-bold text-[#f4f4f4]">Home</h2>
           <ul class="font-medium md:text-xl text-gray-400">
             <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">My profile</Routerlink>
+              <RouterLink to="/profile" class="hover:underline">My profile</RouterLink>
             </li>
             <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">Login/register</Routerlink>
+              <RouterLink to="/login" class="hover:underline">Login/register</RouterLink>
             </li>
             <li class="mb-4">
               <Routerlink to="/" class="hover:underline">Browse</Routerlink>
