@@ -171,7 +171,7 @@
       <!-- Screenshots -->
       <div v-if="screenshots.length > 0" class="border-t-2 border-[#A80ADD] pt-8">
         <h2 class="text-2xl font-bold mb-6">Images</h2>
-        <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <img 
             v-for="screenshot in screenshots.slice(0, 4)" 
             :key="screenshot.id"
@@ -186,8 +186,7 @@
 
   
   </section>
-    <FooterComponent />
-
+  <FooterComponent />
 </template>
 
 <script setup>
@@ -297,10 +296,14 @@ const getStoreIcon = (slug) => {
 const hasStores = computed(() => Array.isArray(game.value?.stores) && game.value.stores.length > 0)
 
 // Fetch game details on mount
-onMounted(fetchGameDetails)
+onMounted(() => {
+  fetchGameDetails()
+})
 
 // Watch for route changes and refetch
-watch(() => route.params.id, fetchGameDetails)
+watch(() => route.params.id, () => {
+  fetchGameDetails()
+})
 </script>
 
 <style scoped>

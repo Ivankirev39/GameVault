@@ -55,17 +55,17 @@
               Browse games to get started →
             </router-link>
           </div>
-          <!-- Favorites Grid (refactored to match rest of app) -->
+          <!-- Favorites Grid (responsive, matches other pages) -->
           <div
             v-if="!loading && favorites.length > 0"
-            class="flex flex-wrap gap-5"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
           >
             <router-link
               v-for="game in favorites"
               :key="game.id"
               :to="`/game/${game.id}`"
-              class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300 relative"
-              style="flex: 1 1 250px; min-width: 280px; max-width: 320px; text-decoration: none;"
+              class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300 relative w-full"
+              style="text-decoration: none;"
             >
               <!-- Remove Button (X) -->
               <button 
@@ -83,7 +83,6 @@
               />
               <div class="w-full h-full bg-gray-800 p-3 cursor-pointer">
                 <h5 class="text-2xl font-bold text-[#f4f4f4] break-words">{{ game.name }}</h5>
-                <!-- Rating removed -->
               </div>
             </router-link>
           </div>
