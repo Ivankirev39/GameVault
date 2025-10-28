@@ -145,27 +145,27 @@
 
 
         <!-- Where to Buy -->
-        <div v-if="game.stores && game.stores.length">
-    <div v-if="game.stores && game.stores.length">
-  <h2 class="text-2xl font-bold mb-6">Where to buy</h2>
-  <div class="flex flex-wrap gap-4">
-    <a 
-      v-for="store in game.stores.slice(0, 4)" 
-      :key="store.id"
-      :href="getStoreUrl(store)"
-      target="_blank"
-      class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
-    >
-      <img
-        :src="getStoreIcon(store.store.slug)"
-        :alt="store.store.name"
-        class="w-10 h-10 object-contain"
-      />
-    </a>
-  </div>
-</div>
-</div>
-
+        <div>
+          <h2 class="text-2xl font-bold mb-6">Where to buy</h2>
+          <div v-if="hasStores" class="flex flex-wrap gap-4">
+            <a 
+              v-for="store in game.stores.slice(0, 4)" 
+              :key="store.id"
+              :href="getStoreUrl(store)"
+              target="_blank"
+              class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
+            >
+              <img
+                :src="getStoreIcon(store.store.slug)"
+                :alt="store.store.name"
+                class="w-10 h-10 object-contain"
+              />
+            </a>
+          </div>
+          <div v-else class="text-gray-400 italic">
+            Not available in any store
+          </div>
+        </div>
       </div>
 
       <!-- Screenshots -->
@@ -191,22 +191,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
-// Add import for favorites composable
 import { useFavorites } from '../modules/useFavorites.js'
+import { useIcons } from '../modules/useIcons.js'
 
 const route = useRoute()
 const { getGameDetails } = useRawgAPI()
-// Use favorites composable
 const { isFavorited, addFavorite, removeFavorite, checkFavorite } = useFavorites()
 
 const game = ref(null)
 const screenshots = ref([])
 const loading = ref(false)
 const error = ref(null)
+const { icons } = useIcons()
 
 // Format date
 const formatDate = (dateString) => {
@@ -274,19 +274,27 @@ const getStoreUrl = (store) => {
   return '#'
 }
 
+// Map store slugs to icon keys in the icons object
+const slugToIconKey = {
+  steam: 'Steam',
+  'epic-games': 'Epic Games',
+  gog: 'GOG',
+  'playstation-store': 'Playstation',
+  'xbox-store': 'Xbox',
+  nintendo: 'Nintendo',
+  'google-play': 'GooglePlay',
+  'app-store': 'AppStore',
+  'apple-appstore': 'AppStore', // Add this line for RAWG's app store slug
+  'apple-store': 'AppStore'     // Add this line for another possible slug
+}
 
 const getStoreIcon = (slug) => {
-  // Images should be placed in /src/assets/store-icons/
-  switch (slug) {
-    case 'steam': return new URL('../assets/store-icons/steam-brands-solid-full.png', import.meta.url).href
-    case 'epic-games': return new URL('../assets/store-icons/epic-games.png', import.meta.url).href
-    case 'gog': return new URL('../assets/store-icons/gog.png', import.meta.url).href
-    case 'playstation-store': return new URL('../assets/store-icons/playstation-store.png', import.meta.url).href
-    case 'xbox-store': return new URL('../assets/store-icons/xbox-store.png', import.meta.url).href
-    case 'nintendo': return new URL('../assets/store-icons/nintendo.png', import.meta.url).href
-    default: return new URL('../assets/store-icons/default.png', import.meta.url).href
-  }
+  const key = slugToIconKey[slug]
+  return (key && icons.value[key]) ? icons.value[key] : icons.value['default']
 }
+
+// Computed property to check if the game has available stores
+const hasStores = computed(() => Array.isArray(game.value?.stores) && game.value.stores.length > 0)
 
 // Fetch game details on mount
 onMounted(fetchGameDetails)
