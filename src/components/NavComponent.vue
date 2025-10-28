@@ -64,9 +64,6 @@ const closeMobileMenu = () => {
           <RouterLink to="/"  class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Home</RouterLink>
         </li>
         <li>
-          <RouterLink to="/about" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">Browse</RouterLink>
-        </li>
-        <li>
           <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-[#A80ADD] md:dark:hover:bg-transparent">New and Trending</RouterLink>
         </li>
         <li>
@@ -130,9 +127,6 @@ const closeMobileMenu = () => {
     <ul class="flex flex-col space-y-2 text-lg">
       <li>
         <RouterLink to="/" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 hover:text-[#A80ADD]" @click="closeMobileMenu">Home</RouterLink>
-      </li>
-      <li>
-        <RouterLink to="/about" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 hover:text-[#A80ADD]" @click="closeMobileMenu">Browse</RouterLink>
       </li>
       <li>
         <RouterLink to="/new-trending" class="block rounded-sm px-3 py-2 text-[#f4f4f4] hover:bg-gray-100 hover:text-[#A80ADD]" @click="closeMobileMenu">New and Trending</RouterLink>
