@@ -12,23 +12,20 @@
             <li class="mb-4">
               <RouterLink to="/login" class="hover:underline">Login/register</RouterLink>
             </li>
-            <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">Browse</Routerlink>
-            </li>
           </ul>
         </div>
         <div>
           <h2 class="mb-6 md:text-2xl font-bold text-[#f4f4f4]">Games</h2>
           <ul class="font-medium md:text-xl text-gray-400">
-              <li class="mb-4">
-              <Routerlink to="/" class="hover:underline">Browse</Routerlink>
+                 <li class="mb-4">
+              <RouterLink to="/" class="hover:underline">Home</RouterLink>
             </li>
             <li class="mb-4">
               <RouterLink to="/new-trending" class="hover:underline">New and Trending</RouterLink>
             </li>
               <li class="mb-4">
               <RouterLink to="/goats" class="hover:underline">GOAT</RouterLink>
-            </li>
+              </li>
           </ul>
         </div>
       </div>

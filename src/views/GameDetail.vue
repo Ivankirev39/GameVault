@@ -149,17 +149,19 @@
     <div v-if="game.stores && game.stores.length">
   <h2 class="text-2xl font-bold mb-6">Where to buy</h2>
   <div class="flex flex-wrap gap-4">
-  <a 
-  v-for="store in game.stores.slice(0, 4)" 
-  :key="store.id"
-  :href="getStoreUrl(store)"
-  target="_blank"
-  class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
->
-  <span class="text-2xl">
-    {{ getStoreIcon(store.store.slug) }}
-  </span>
-</a>
+    <a 
+      v-for="store in game.stores.slice(0, 4)" 
+      :key="store.id"
+      :href="getStoreUrl(store)"
+      target="_blank"
+      class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
+    >
+      <img
+        :src="getStoreIcon(store.store.slug)"
+        :alt="store.store.name"
+        class="w-10 h-10 object-contain"
+      />
+    </a>
   </div>
 </div>
 </div>
@@ -274,14 +276,15 @@ const getStoreUrl = (store) => {
 
 
 const getStoreIcon = (slug) => {
+  // Images should be placed in /src/assets/store-icons/
   switch (slug) {
-    case 'steam': return '🟦'
-    case 'epic-games': return '🟪'
-    case 'gog': return '🟩'
-    case 'playstation-store': return '🎮'
-    case 'xbox-store': return '🟦'
-    case 'nintendo': return '🔴'
-    default: return '🛒'
+    case 'steam': return new URL('../assets/store-icons/steam-brands-solid-full.png', import.meta.url).href
+    case 'epic-games': return new URL('../assets/store-icons/epic-games.png', import.meta.url).href
+    case 'gog': return new URL('../assets/store-icons/gog.png', import.meta.url).href
+    case 'playstation-store': return new URL('../assets/store-icons/playstation-store.png', import.meta.url).href
+    case 'xbox-store': return new URL('../assets/store-icons/xbox-store.png', import.meta.url).href
+    case 'nintendo': return new URL('../assets/store-icons/nintendo.png', import.meta.url).href
+    default: return new URL('../assets/store-icons/default.png', import.meta.url).href
   }
 }
 

@@ -15,7 +15,7 @@ export function useFavorites() {
       return
     }
     try {
-      const favRef = doc(db, `users/${currentUser.value.uid}/favorites/${game.id}`)
+      const favRef = doc(db, `users/${currentUser.value.uid}/favorites/${game.id}`) // refactor to using a array on the userID in the FB collection. Removes one layer
       await setDoc(favRef, {
         name: game.name,
         background_image: game.background_image,
