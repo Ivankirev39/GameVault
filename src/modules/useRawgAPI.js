@@ -1,9 +1,10 @@
 import { ref } from 'vue'
+import { isNSFW } from './useGameUtils'
 
 // Move isNSFW helper back here for now so filtering works
-const isNSFW = (game) => {
-  return game.tags?.some(tag => tag.id === 16459 || tag.slug === 'adult' || tag.slug === 'nsfw')
-}
+// const isNSFW = (game) => {
+//   return game.tags?.some(tag => tag.id === 16459 || tag.slug === 'adult' || tag.slug === 'nsfw')
+// }
 
 export function useRawgAPI() {
   // State

@@ -156,7 +156,7 @@
               class="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
             >
               <img
-                :src="getStoreIcon(store.store.slug)"
+                :src="getStoreIconForSlug(store.store.slug)"
                 :alt="store.store.name"
                 class="w-10 h-10 object-contain"
               />
@@ -195,7 +195,7 @@ import { useRoute } from 'vue-router'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
 import { useFavorites } from '../modules/useFavorites.js'
-import { useIcons } from '../modules/useIcons.js'
+import { formatDate, getStoreIcon } from '../modules/useGameUtils'
 
 const route = useRoute()
 const { getGameDetails } = useRawgAPI()
@@ -205,18 +205,6 @@ const game = ref(null)
 const screenshots = ref([])
 const loading = ref(false)
 const error = ref(null)
-const { icons } = useIcons()
-
-// Format date
-const formatDate = (dateString) => {
-  if (!dateString) return 'Unknown'
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  })
-}
 
 // Toggle favorite
 const toggleFavorite = async () => {
@@ -273,24 +261,8 @@ const getStoreUrl = (store) => {
   return '#'
 }
 
-// Map store slugs to icon keys in the icons object
-const slugToIconKey = {
-  steam: 'Steam',
-  'epic-games': 'Epic Games',
-  gog: 'GOG',
-  'playstation-store': 'Playstation',
-  'xbox-store': 'Xbox',
-  nintendo: 'Nintendo',
-  'google-play': 'GooglePlay',
-  'app-store': 'AppStore',
-  'apple-appstore': 'AppStore', // Add this line for RAWG's app store slug
-  'apple-store': 'AppStore'     // Add this line for another possible slug
-}
-
-const getStoreIcon = (slug) => {
-  const key = slugToIconKey[slug]
-  return (key && icons.value[key]) ? icons.value[key] : icons.value['default']
-}
+// Get store icon by slug
+const getStoreIconForSlug = (slug) => getStoreIcon(slug)
 
 // Computed property to check if the game has available stores
 const hasStores = computed(() => Array.isArray(game.value?.stores) && game.value.stores.length > 0)
