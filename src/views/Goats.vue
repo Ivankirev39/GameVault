@@ -82,7 +82,14 @@ import FooterComponent from '../components/FooterComponent.vue'
 import GameCard from '../components/GameCard.vue'
 import Dropdown from '../components/Dropdown.vue'
 
-const { getBestRatedGames, getGenres, getPlatforms } = useRawgAPI()
+const { getBestRatedGames } = useRawgAPI()
+// Remove getGenres, getPlatforms from useRawgAPI
+
+import { useGenres } from '../modules/useGenres'
+import { usePlatforms } from '../modules/usePlatforms'
+
+const { genres, fetchGenres } = useGenres()
+const { platforms, fetchPlatforms } = usePlatforms()
 
 const top100Games = ref([])
 const loading = ref(false)
@@ -90,8 +97,6 @@ const error = ref(null)
 
 
 // Filter state
-const genres = ref([])
-const platforms = ref([])
 const selectedGenre = ref(null)
 const selectedGenreName = ref(null)
 const selectedPlatform = ref(null)
@@ -153,8 +158,8 @@ const fetchFilteredGames = async () => {
 
 // Initial data fetch
 onMounted(async () => {
-  genres.value = await getGenres()
-  platforms.value = await getPlatforms()
+  await fetchGenres()
+  await fetchPlatforms()
   await fetchFilteredGames()
 })
 </script>

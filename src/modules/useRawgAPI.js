@@ -1,5 +1,10 @@
 import { ref } from 'vue'
 
+// Move isNSFW helper back here for now so filtering works
+const isNSFW = (game) => {
+  return game.tags?.some(tag => tag.id === 16459 || tag.slug === 'adult' || tag.slug === 'nsfw')
+}
+
 export function useRawgAPI() {
   // State
   const games = ref([])
@@ -26,98 +31,93 @@ export function useRawgAPI() {
     return url.toString()
   }
 
-  // Helper to check if a game is NSFW/adult
-const isNSFW = (game) => {
-  return game.tags?.some(tag => tag.id === 16459 || tag.slug === 'adult' || tag.slug === 'nsfw')
-}
+  // 1. Get Popular Games (for Home page)
+  const getPopularGames = async (pageSize = 20, filters = {}) => {
+    loading.value = true
+    error.value = null
 
-// 1. Get Popular Games (for Home page)
-const getPopularGames = async (pageSize = 20, filters = {}) => {
-  loading.value = true
-  error.value = null
+    try {
+      const url = buildURL('/games', {
+        page_size: pageSize,
+        ordering: '-rating'
+      })
 
-  try {
-    const url = buildURL('/games', {
-      page_size: pageSize,
-      ordering: '-rating'
-    })
-
-    const response = await fetch(url)
-    if (!response.ok) throw new Error(`API Error: ${response.status}`)
-    const data = await response.json()
-    // Filter NSFW unless allowed
-    const filtered = (filters.allowNSFW)
-      ? data.results
-      : data.results.filter(game => !isNSFW(game))
-    games.value = filtered
-    return filtered
-  } catch (err) {
-    error.value = err.message
-    console.error('Error fetching popular games:', err)
-  } finally {
-    loading.value = false
+      const response = await fetch(url)
+      if (!response.ok) throw new Error(`API Error: ${response.status}`)
+      const data = await response.json()
+      // Filter NSFW unless allowed
+      const filtered = (filters.allowNSFW)
+        ? data.results
+        : data.results.filter(game => !isNSFW(game))
+      games.value = filtered
+      return filtered
+    } catch (err) {
+      error.value = err.message
+      console.error('Error fetching popular games:', err)
+    } finally {
+      loading.value = false
+    }
   }
-}
 
-// 2. Search Games (for SearchBar)
-const searchGames = async (query, filters = {}) => {
-  loading.value = true
-  error.value = null
+  // 2. Search Games (for SearchBar)
+  const searchGames = async (query, filters = {}) => {
+    loading.value = true
+    error.value = null
 
-  try {
-    const url = buildURL('/games', {
-      search: query,
-      page_size: filters.pageSize || 20,
-      genres: filters.genre,
-      platforms: filters.platform,
-      ordering: filters.ordering || '-rating',
-      dates: filters.dates,
-      tags: filters.tags
-    })
+    try {
+      const url = buildURL('/games', {
+        search: query,
+        page_size: filters.pageSize || 20,
+        genres: filters.genre,
+        platforms: filters.platform,
+        ordering: filters.ordering || '-rating',
+        dates: filters.dates,
+        tags: filters.tags
+      })
 
-    const response = await fetch(url)
-    if (!response.ok) throw new Error(`API Error: ${response.status}`)
-    const data = await response.json()
-    let filtered = (filters.allowNSFW)
-      ? data.results
-      : data.results.filter(game => !isNSFW(game))
+      const response = await fetch(url)
+      if (!response.ok) throw new Error(`API Error: ${response.status}`)
+      const data = await response.json()
+      let filtered = (filters.allowNSFW)
+        ? data.results
+        : data.results.filter(game => !isNSFW(game))
 
-    // Prioritize exact name match
-    filtered = filtered.sort((a, b) => {
-      if (a.name.toLowerCase() === query.toLowerCase()) return -1
-      if (b.name.toLowerCase() === query.toLowerCase()) return 1
-      return 0
-    })
+      // Prioritize exact name match
+      filtered = filtered.sort((a, b) => {
+        if (a.name.toLowerCase() === query.toLowerCase()) return -1
+        if (b.name.toLowerCase() === query.toLowerCase()) return 1
+        return 0
+      })
 
-    games.value = filtered
-    return filtered
-  } catch (err) {
-    error.value = err.message
-    console.error('Error searching games:', err)
-  } finally {
-    loading.value = false
+      games.value = filtered
+      return filtered
+    } catch (err) {
+      error.value = err.message
+      console.error('Error searching games:', err)
+    } finally {
+      loading.value = false
+    }
   }
-}
 
-// 3. Get Game Details (for GameDetail page)
-const getGameDetails = async (gameId) => {
-  loading.value = true
-  error.value = null
-  
-  try {
-    const url = buildURL(`/games/${gameId}`)
+  // 3. Get Game Details (for GameDetail page)
+  const getGameDetails = async (gameId) => {
+    loading.value = true
+    error.value = null
     
-    const response = await fetch(url)
-    const data = await response.json()
-    
-    return data
-  } catch (err) {
-    error.value = err.message
-    console.error('Error fetching game details:', err)
-  } finally {
-    loading.value = false
+    try {
+      const url = buildURL(`/games/${gameId}`)
+      
+      const response = await fetch(url)
+      const data = await response.json()
+      
+      return data
+    } catch (err) {
+      error.value = err.message
+      console.error('Error fetching game details:', err)
+    } finally {
+      loading.value = false
+    }
   }
-}
 
 
   // 4. Get New Releases (for NewReleases page)
@@ -182,122 +182,90 @@ const getGameDetails = async (gameId) => {
     }
   }
 
-// In src/modules/useRawgAPI.js
+  const getTrendingGames = async (pageSize = 20, filters = {}) => {
+    loading.value = true
+    error.value = null
 
-// Get all genres
-const getGenres = async () => {
-  try {
-    const url = buildURL('/genres', {})
-    const response = await fetch(url)
-    const data = await response.json()
-    return data.results
-  } catch (err) {
-    console.error('Error fetching genres:', err)
-    return []
+    try {
+      const threeMonthsAgo = new Date()
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
+      const dateString = threeMonthsAgo.toISOString().split('T')[0]
+      const today = new Date().toISOString().split('T')[0]
+
+      const url = buildURL('/games', {
+        page_size: pageSize,
+        dates: `${dateString},${today}`,
+        ordering: filters.ordering || '-rating',
+        exclude_additions: 1
+      })
+
+      const response = await fetch(url)
+      const data = await response.json()
+      // Filter NSFW unless allowed
+      const filtered = (filters.allowNSFW)
+        ? data.results
+        : data.results.filter(game => !isNSFW(game))
+      return filtered
+    } catch (err) {
+      error.value = err.message
+      console.error('Error fetching trending games:', err)
+    } finally {
+      loading.value = false
+    }
   }
-}
 
-// Get all platforms
-const getPlatforms = async () => {
-  try {
-    const url = buildURL('/platforms', {})
-    const response = await fetch(url)
-    const data = await response.json()
-    return data.results
-  } catch (err) {
-    console.error('Error fetching platforms:', err)
-    return []
+  const getGamesByDeveloper = async (developerId, pageSize = 40) => {
+    loading.value = true
+    error.value = null
+    try {
+      const url = buildURL('/games', {
+        developers: developerId,
+        page_size: pageSize
+      })
+      const response = await fetch(url)
+      const data = await response.json()
+      games.value = data.results
+      return data.results
+    } catch (err) {
+      error.value = err.message
+      return []
+    } finally {
+      loading.value = false
+    }
   }
-}
 
-const getTrendingGames = async (pageSize = 20, filters = {}) => {
-  loading.value = true
-  error.value = null
-
-  try {
-    const threeMonthsAgo = new Date()
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
-    const dateString = threeMonthsAgo.toISOString().split('T')[0]
-    const today = new Date().toISOString().split('T')[0]
-
-    const url = buildURL('/games', {
-      page_size: pageSize,
-      dates: `${dateString},${today}`,
-      ordering: filters.ordering || '-rating',
-      exclude_additions: 1
-    })
-
-    const response = await fetch(url)
-    const data = await response.json()
-    // Filter NSFW unless allowed
-    const filtered = (filters.allowNSFW)
-      ? data.results
-      : data.results.filter(game => !isNSFW(game))
-    return filtered
-  } catch (err) {
-    error.value = err.message
-    console.error('Error fetching trending games:', err)
-  } finally {
-    loading.value = false
+  const getGamesByPublisher = async (publisherId, pageSize = 40) => {
+    loading.value = true
+    error.value = null
+    try {
+      const url = buildURL('/games', {
+        publishers: publisherId,
+        page_size: pageSize
+      })
+      const response = await fetch(url)
+      const data = await response.json()
+      games.value = data.results
+      return data.results
+    } catch (err) {
+      error.value = err.message
+      return []
+    } finally {
+      loading.value = false
+    }
   }
-}
 
-const getGamesByDeveloper = async (developerId, pageSize = 40) => {
-  loading.value = true
-  error.value = null
-  try {
-    const url = buildURL('/games', {
-      developers: developerId,
-      page_size: pageSize
-    })
-    const response = await fetch(url)
-    const data = await response.json()
-    games.value = data.results
-    return data.results
-  } catch (err) {
-    error.value = err.message
-    return []
-  } finally {
-    loading.value = false
+
+  return {
+    games,
+    loading,
+    error,
+    getPopularGames,
+    getNewReleases,
+    getTrendingGames,
+    getBestRatedGames,
+    searchGames,
+    getGameDetails,  
+    getGamesByDeveloper,
+    getGamesByPublisher,
   }
-}
-
-const getGamesByPublisher = async (publisherId, pageSize = 40) => {
-  loading.value = true
-  error.value = null
-  try {
-    const url = buildURL('/games', {
-      publishers: publisherId,
-      page_size: pageSize
-    })
-    const response = await fetch(url)
-    const data = await response.json()
-    games.value = data.results
-    return data.results
-  } catch (err) {
-    error.value = err.message
-    return []
-  } finally {
-    loading.value = false
-  }
-}
-
-
-return {
-  games,
-  loading,
-  error,
-  getPopularGames,
-  getNewReleases,
-  getTrendingGames,
-  getBestRatedGames,
-  getGenres,
-  getPlatforms,
-  searchGames,
-  getGameDetails,  
-  getGamesByDeveloper,
-  getGamesByPublisher,
-}
-
-  
 }
