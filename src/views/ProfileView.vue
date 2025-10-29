@@ -58,33 +58,18 @@
           <!-- Favorites Grid (responsive, matches other pages) -->
           <div
             v-if="!loading && favorites.length > 0"
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"
+            class="flex flex-wrap gap-5"
           >
-            <router-link
+            <GameCard
               v-for="game in favorites"
               :key="game.id"
-              :to="`/game/${game.id}`"
-              class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300 relative w-full"
-              style="text-decoration: none;"
-            >
-              <!-- Remove Button (X) -->
-              <button 
-                @click.stop.prevent="removeFavorite(game.id)"
-                class="absolute top-2 right-2 z-10 bg-red-600 hover:bg-red-700 text-[#f4f4f4] w-8 h-8 rounded-full flex items-center justify-center font-bold cursor-pointer transition-colors"
-                style="box-shadow: 0 2px 8px rgba(0,0,0,0.2);"
-                title="Remove from favorites"
-              >
-                ✕
-              </button>
-              <img
-                :src="game.background_image || 'https://via.placeholder.com/300x400'"
-                :alt="game.name"
-                class="w-full h-[220px] object-cover"
-              />
-              <div class="w-full h-full bg-gray-800 p-3 cursor-pointer">
-                <h5 class="text-2xl font-bold text-[#f4f4f4] break-words">{{ game.name }}</h5>
-              </div>
-            </router-link>
+              :game="game"
+              :showRemove="true"
+              :onRemove="removeFavorite"
+              :showRating="false"
+              imgClass="h-[220px]"
+              cardClass="m-0"
+            />
           </div>
         </div>
       </div>
@@ -100,6 +85,7 @@ import { useAuth } from '../modules/useAuth'
 import FooterComponent from '../components/FooterComponent.vue'
 import { db } from '../modules/firebase'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import GameCard from '../components/GameCard.vue'
 
 const router = useRouter()
 const { currentUser } = useAuth()
