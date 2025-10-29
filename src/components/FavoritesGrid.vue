@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="favorites.length > 0"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-8 p-4"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-5"
   >
     <GameCard
       v-for="game in favorites"

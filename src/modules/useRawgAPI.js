@@ -183,6 +183,8 @@ export function useRawgAPI() {
     }
   }
 
+ // 6. Get Trending Games (for Trending section)
+   
   const getTrendingGames = async (pageSize = 20, filters = {}) => {
     loading.value = true
     error.value = null
@@ -215,6 +217,8 @@ export function useRawgAPI() {
     }
   }
 
+  // 7. Get Games by Developer
+
   const getGamesByDeveloper = async (developerId, pageSize = 40) => {
     loading.value = true
     error.value = null
@@ -234,6 +238,8 @@ export function useRawgAPI() {
       loading.value = false
     }
   }
+
+  // 8. Get Games by Publisher
 
   const getGamesByPublisher = async (publisherId, pageSize = 40) => {
     loading.value = true
