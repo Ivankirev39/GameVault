@@ -1,5 +1,4 @@
 <template>
-
   <section class="home">
     <header class="text-[#f4f4f4] mx-auto max-w-7xl mt-6">
       <h1 class="text-4xl md:text-5xl font-bold">GameVault</h1>
@@ -9,130 +8,52 @@
     </header>
 
     <div class="mt-10 mx-auto max-w-7xl">
-      <!-- Header + Carousel Row -->
-      <div class="flex items-center justify-between">
-        <h2 id="popular-games" class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
-          Players Choice
-        </h2>
-        
-        <div class="flex w-[250px] h-[60px] items-center justify-between rounded-md bg-[#121212] p-2">
-          <!-- Left Arrow -->
-          <button
-            class="cursor-pointer rounded-md bg-[#1a1a1a] p-2"
-            @click="prevPage"
-            :disabled="carouselPage === 0"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#f4f4f4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+      <!-- Players Choice Carousel -->
+      <Carousel :items="games" :pageSize="4">
+        <template #header>
+          <h2 id="popular-games" class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
+            Players Choice
+          </h2>
+        </template>
+        <template #default="{ pagedItems }">
+          <GameCard
+            v-for="game in pagedItems"
+            :key="game.id"
+            :game="game"
+          />
+        </template>
+      </Carousel>
 
-          <!-- Progress Dots -->
-          <div class="flex items-center space-x-2">
-            <span
-              v-for="n in totalPages"
-              :key="n"
-              :class="[
-                'h-2',
-                n - 1 === carouselPage ? 'w-8 bg-[#A80ADD]' : 'w-5 bg-gray-700',
-                'rounded-full'
-              ]"
-            ></span>
-          </div>
-
-          <!-- Right Arrow -->
-          <button
-            class="cursor-pointer rounded-md bg-[#1a1a1a] p-2"
-            @click="nextPage"
-            :disabled="carouselPage === totalPages - 1"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#f4f4f4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+      <!-- New Releases Carousel -->
+      <div class="mt-16">
+        <Carousel :items="newReleases" :pageSize="4">
+          <template #header>
+            <h2 class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
+              New Releases
+            </h2>
+          </template>
+          <template #default="{ pagedItems }">
+            <GameCard
+              v-for="game in pagedItems"
+              :key="game.id"
+              :game="game"
+              :showReleaseDate="true"
+              :showRating="false"
+            />
+          </template>
+        </Carousel>
       </div>
-
-   
-    <!-- Loading state -->
-    <div v-if="loading" class="bg-[#f4f4f4] p-[10px]">Loading games...</div>
-    
-    <!-- Error state -->
-    <div v-if="error" class="error text-red-500 p-[20px]">{{ error }}</div>
-    
-<!-- Games grid -->
-<div v-if="!loading && games.length > 0" class="flex flex-wrap gap-5">
-  <GameCard
-    v-for="game in pagedGames"
-    :key="game.id"
-    :game="game"
-  />
-</div>
-
-    <!-- New Releases Carousel -->
-    <div class="mt-16">
-      <div class="flex items-center justify-between">
-        <h2 class="text-3xl md:text-4xl underline decoration-[#A80ADD] font-semibold text-[#f4f4f4]">
-          New Releases
-        </h2>
-        <div class="flex w-[250px] h-[60px] items-center justify-between rounded-md bg-[#121212] p-2">
-          <button
-            class="cursor-pointer rounded-md bg-[#1a1a1a] p-2"
-            @click="prevNewPage"
-            :disabled="newCarouselPage === 0"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#f4f4f4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <div class="flex items-center space-x-2">
-            <span
-              v-for="n in newTotalPages"
-              :key="n"
-              :class="[
-                'h-2',
-                n - 1 === newCarouselPage ? 'w-8 bg-[#A80ADD]' : 'w-5 bg-gray-700',
-                'rounded-full'
-              ]"
-            ></span>
-          </div>
-          <button
-            class="cursor-pointer rounded-md bg-[#1a1a1a] p-2"
-            @click="nextNewPage"
-            :disabled="newCarouselPage === newTotalPages - 1"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#f4f4f4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div v-if="newLoading" class="bg-[#f4f4f4] p-[10px]">Loading new releases...</div>
-      <div v-if="newError" class="error text-red-500 p-[20px]">{{ newError }}</div>
-      <div v-if="!newLoading && newReleases.length > 0" class="flex flex-wrap gap-5">
-        <GameCard
-          v-for="game in pagedNewReleases"
-          :key="game.id"
-          :game="game"
-          :showReleaseDate="true"
-          :showRating="false"
-        />
-      </div>
-    </div>
-
     </div>
   </section>
-
-<FooterComponent />
-
+  <FooterComponent />
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRawgAPI } from '../modules/useRawgAPI'
 import FooterComponent from '../components/FooterComponent.vue'
 import GameCard from '../components/GameCard.vue'
+import Carousel from '../components/Carousel.vue'
 
 const { getPopularGames, getNewReleases } = useRawgAPI()
 
@@ -140,43 +61,11 @@ const { getPopularGames, getNewReleases } = useRawgAPI()
 const games = ref([])
 const loading = ref(false)
 const error = ref(null)
-const carouselPage = ref(0)
-const pageSize = 4
-
-const totalPages = computed(() =>
-  Math.ceil(games.value.length / pageSize)
-)
-const pagedGames = computed(() => {
-  const start = carouselPage.value * pageSize
-  return games.value.slice(start, start + pageSize)
-})
-function prevPage() {
-  if (carouselPage.value > 0) carouselPage.value--
-}
-function nextPage() {
-  if (carouselPage.value < totalPages.value - 1) carouselPage.value++
-}
 
 // New Releases state
 const newReleases = ref([])
 const newLoading = ref(false)
 const newError = ref(null)
-const newCarouselPage = ref(0)
-const newPageSize = 4
-
-const newTotalPages = computed(() =>
-  Math.ceil(newReleases.value.length / newPageSize)
-)
-const pagedNewReleases = computed(() => {
-  const start = newCarouselPage.value * newPageSize
-  return newReleases.value.slice(start, start + newPageSize)
-})
-function prevNewPage() {
-  if (newCarouselPage.value > 0) newCarouselPage.value--
-}
-function nextNewPage() {
-  if (newCarouselPage.value < newTotalPages.value - 1) newCarouselPage.value++
-}
 
 // Fetch games when component mounts
 onMounted(async () => {

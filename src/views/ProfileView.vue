@@ -28,14 +28,11 @@
               Edit Profile
             </button>
             <!-- Stats Section -->
-            <div class="mt-8">
-              <h3 class="text-2xl font-bold mb-6 border-b border-[#A80ADD] pb-2">Stats</h3>
-              <div class="space-y-4 text-lg text-[#f4f4f4]">
-                <p><span class="font-semibold">Total favorites:</span> {{ favorites.length }} games</p>
-                <p><span class="font-semibold">Most Recent Favorite:</span> {{ mostRecentFavorite }}</p>
-                <p><span class="font-semibold">Favorites Value:</span> ${{ collectionValue }}</p>
-              </div>
-            </div>
+            <StatsCard
+              :totalFavorites="favorites.length"
+              :mostRecentFavorite="mostRecentFavorite"
+              :collectionValue="collectionValue"
+            />
           </div>
         </div>
         <!-- Right Column - Favorite Games -->
@@ -56,21 +53,11 @@
             </router-link>
           </div>
           <!-- Favorites Grid (responsive, matches other pages) -->
-          <div
+          <FavoritesGrid
             v-if="!loading && favorites.length > 0"
-            class="flex flex-wrap gap-5"
-          >
-            <GameCard
-              v-for="game in favorites"
-              :key="game.id"
-              :game="game"
-              :showRemove="true"
-              :onRemove="removeFavorite"
-              :showRating="false"
-              imgClass="h-[220px]"
-              cardClass="m-0"
-            />
-          </div>
+            :favorites="favorites"
+            :onRemove="removeFavorite"
+          />
         </div>
       </div>
     </div>
@@ -86,6 +73,8 @@ import FooterComponent from '../components/FooterComponent.vue'
 import { db } from '../modules/firebase'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import GameCard from '../components/GameCard.vue'
+import StatsCard from '../components/StatsCard.vue'
+import FavoritesGrid from '../components/FavoritesGrid.vue'
 
 const router = useRouter()
 const { currentUser } = useAuth()

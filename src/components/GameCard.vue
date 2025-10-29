@@ -2,7 +2,6 @@
   <router-link
     :to="`/game/${game.id}`"
     class="bg-[#2a2a2a] rounded-lg border-[#A80ADD] border-b-10 overflow-hidden hover:scale-105 transition-transform duration-300 relative"
-    :class="cardClass"
     style="flex: 1 1 250px; min-width: 280px; text-decoration: none;"
   >
     <!-- Rank badge (GOATs) -->
@@ -20,8 +19,7 @@
     <img
       :src="game.background_image || 'https://via.placeholder.com/300x400'"
       :alt="game.name"
-      class="w-full object-cover"
-      :class="imgClass ? imgClass : 'h-[300px]'"
+      class="w-full h-[300px] object-cover"
     />
     <div class="w-full h-full bg-gray-800 p-3 cursor-pointer">
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-[#f4f4f4] break-words">{{ game.name }}</h5>
@@ -43,8 +41,6 @@ defineProps({
   showRating: { type: Boolean, default: true },
   showMetacritic: { type: Boolean, default: false },
   showGenre: { type: Boolean, default: false },
-  showReleaseDate: { type: Boolean, default: false },
-  imgClass: { type: String, default: '' },
-  cardClass: { type: String, default: '' }
+  showReleaseDate: { type: Boolean, default: false }
 })
 </script>
