@@ -67,6 +67,6 @@ const onClickOutside = (e) => {
 }
 watch(open, (val) => {
   if (val) window.addEventListener('click', onClickOutside)
-  else window.removeEventListener('click', onClickOutside)
+  else window.removeEventListener('click', onClickOutside) // change to use Vue own event handling
 })
 </script>

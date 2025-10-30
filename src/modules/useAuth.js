@@ -2,19 +2,25 @@ import { computed, ref } from 'vue'
 import { firebaseApp } from './firebase'
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from 'firebase/auth'
 
-
 const auth = getAuth(firebaseApp)
 
 const currentUser = ref(null)
-
 const isLoggedIn = computed(() => !!currentUser.value);
 
 const authError = ref(null)
 const loading = ref(false)
 
+
+let resolveAuthReady
+export const authReady = new Promise((resolve) => {
+    resolveAuthReady = resolve
+})
+
 onAuthStateChanged(auth, (user) => {
     currentUser.value = user
+    resolveAuthReady() // resolve when auth state is known
 })
+
 
 const login = async (email, password) => {
     console.log('login attempt: ', email)

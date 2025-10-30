@@ -4,8 +4,8 @@ export function useGenres() {
   const genres = ref([])
   const loading = ref(false)
   const error = ref(null)
-  const API_KEY = import.meta.env.VITE_RAWG_API_KEY
-  const BASE_URL = 'https://api.rawg.io/api'
+  const API_KEY = import.meta.env.VITE_RAWG_API_KEY // guuuut
+  const BASE_URL = 'https://api.rawg.io/api' // also guuuut to store in variable ( research why many are using UPPERcase for that)
 
   const fetchGenres = async () => {
     loading.value = true

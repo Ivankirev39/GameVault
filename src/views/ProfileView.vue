@@ -66,18 +66,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../modules/useAuth'
 import FooterComponent from '../components/FooterComponent.vue'
 import { db } from '../modules/firebase'
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
-import GameCard from '../components/GameCard.vue'
 import StatsCard from '../components/StatsCard.vue'
 import FavoritesGrid from '../components/FavoritesGrid.vue'
 
 const router = useRouter()
-const { currentUser } = useAuth()
+const { currentUser, loading: authLoading } = useAuth()
 
 const favorites = ref([])
 const loading = ref(false)
@@ -141,12 +140,24 @@ const removeFavorite = async (gameId) => {
 }
 
 // Load favorites on mount
+watch(
+  () => authLoading.value,
+  (isLoading) => {
+    if (!isLoading && !currentUser.value) {
+      router.push('/login')
+    }
+  },
+  { immediate: true }
+)
+
 onMounted(async () => {
-  if (!currentUser.value) {
+  if (!authLoading.value && !currentUser.value) {
     router.push('/login')
     return
   }
-  await loadFavorites()
+  if (currentUser.value) {
+    await loadFavorites()
+  }
 })
 </script>
 

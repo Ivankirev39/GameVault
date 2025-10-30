@@ -1,5 +1,5 @@
 <template>
-<button v-if="isLoggedIn" @click="handleLgoout" class="auth-btn">Logout</button>
+<button v-if="isLoggedIn" @click="handleLgoout" class="auth-btn cursor-pointer">Logout</button>
 <router-link v-else class="auth-btn" to="/login"> Login </router-link>
 </template>
 
